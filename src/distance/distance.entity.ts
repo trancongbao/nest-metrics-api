@@ -11,13 +11,7 @@ export class DistanceMetric {
   id: string;
 
   @Column('double precision')
-  canonical_meters: number;
-
-  @Column('double precision')
-  original_value: number;
-
-  @Column('varchar')
-  original_unit: string;
+  value: number;
 
   @Column('timestamp with time zone')
   recorded_at: Date;
