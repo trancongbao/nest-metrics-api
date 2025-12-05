@@ -1,16 +1,19 @@
 import { DataSource } from 'typeorm';
-import { ConfigModule } from '@nestjs/config';
 import { config as dotenvConfig } from 'dotenv';
-import { Metric } from './src/metrics/metric.entity';
+import { DistanceMetric } from './src/distance/distance.entity';
+import { TemperatureMetric } from './src/temperature/temperature.entity';
 
-dotenvConfig(); // load .env
+dotenvConfig();
 
 const dataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
-  entities: [Metric],
+  entities: [
+    DistanceMetric,
+    TemperatureMetric,
+  ],
   migrations: ['src/migrations/*.ts'],
-  synchronize: false, // migrations only
+  synchronize: false,
 });
 
 export default dataSource;
