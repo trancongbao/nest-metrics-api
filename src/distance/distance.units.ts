@@ -7,31 +7,20 @@ export enum DistanceUnit {
 }
 export const DistanceUnits = Object.values(DistanceUnit);
 
+// Define conversion factors *to meters* (1 of the unit = this many meters)
+export const UNIT_TO_METER_FACTOR: Record<DistanceUnit, number> = {
+  [DistanceUnit.M]: 1,
+  [DistanceUnit.CM]: 0.01, // 1 cm = 0.01 m
+  [DistanceUnit.IN]: 0.0254,
+  [DistanceUnit.FT]: 0.3048,
+  [DistanceUnit.YD]: 0.9144,
+};
+
 export function toMeters(value: number, unit: DistanceUnit): number {
-  switch (unit) {
-    case DistanceUnit.M:
-      return value;
-    case DistanceUnit.CM:
-      return value / 100;
-    case DistanceUnit.IN:
-      return value * 0.0254;
-    case DistanceUnit.FT:
-      return value * 0.3048;
-    case DistanceUnit.YD:
-      return value * 0.9144;
-  }
+  return value * UNIT_TO_METER_FACTOR[unit];
 }
+
 export function fromMeters(m: number, unit: DistanceUnit): number {
-  switch (unit) {
-    case DistanceUnit.M:
-      return m;
-    case DistanceUnit.CM:
-      return m * 100;
-    case DistanceUnit.IN:
-      return m / 0.0254;
-    case DistanceUnit.FT:
-      return m / 0.3048;
-    case DistanceUnit.YD:
-      return m / 0.9144;
-  }
+  // To convert *from* meters, you divide by the factor
+  return m / UNIT_TO_METER_FACTOR[unit];
 }

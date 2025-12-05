@@ -8,6 +8,7 @@ import {
   DistanceUnit,
   toMeters,
   fromMeters,
+  UNIT_TO_METER_FACTOR,
 } from './distance.units';
 
 @Injectable()
@@ -32,17 +33,24 @@ export class DistanceService {
   }
 
   async list(unit?: DistanceUnit) {
-    const items = await this.repo.find({ order: { recorded_at: 'ASC' } });
+    if (!unit) {
+      return this.repo.query(`
+      SELECT id, recorded_at, value, created_at, 'm' AS unit
+      FROM distance_metrics
+      ORDER BY recorded_at ASC
+    `);
+    }
 
-    if (!unit) return items.map((i) => ({ ...i, value: i.value, unit: 'm' }));
+    const factor = UNIT_TO_METER_FACTOR[unit];
 
-    return items.map((i) => ({
-      id: i.id,
-      recorded_at: i.recorded_at,
-      value: fromMeters(i.value, unit),
-      unit,
-      created_at: i.created_at,
-    }));
+    return this.repo.query(
+      `
+    SELECT id, recorded_at, value / $1 AS value, created_at
+    FROM distance_metrics
+    ORDER BY recorded_at ASC
+    `,
+      [factor],
+    );
   }
 
   async chart(months: number = 1, unit?: DistanceUnit) {
