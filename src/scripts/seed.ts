@@ -20,19 +20,51 @@ async function run() {
 
   const now = new Date();
 
-  // Seed distance metrics (meters canonical)
-  await distanceRepo.save([
-    { value: 10, recorded_at: new Date(now.getTime() - 86400000 * 3) },
-    { value: 25, recorded_at: new Date(now.getTime() - 86400000 * 2) },
-    { value: 5, recorded_at: new Date(now.getTime() - 86400000) },
-  ]);
+  function daysAgo(n: number) {
+    return new Date(now.getTime() - n * 86400000);
+  }
 
-  // Seed temperature metrics (kelvin canonical)
-  await tempRepo.save([
-    { value: 293.15, recorded_at: new Date(now.getTime() - 86400000 * 3) },
-    { value: 295.15, recorded_at: new Date(now.getTime() - 86400000 * 2) },
-    { value: 290.15, recorded_at: new Date(now.getTime() - 86400000) },
-  ]);
+  // Generate 10 metrics for distance
+  const distanceData = [
+    // last few days
+    { value: 10, recorded_at: daysAgo(1) },
+    { value: 20, recorded_at: daysAgo(2) },
+    { value: 30, recorded_at: daysAgo(3) },
+    { value: 40, recorded_at: daysAgo(4) },
+    { value: 50, recorded_at: daysAgo(5) },
+
+    // previous month
+    { value: 60, recorded_at: daysAgo(30) },
+    { value: 70, recorded_at: daysAgo(40) },
+    { value: 80, recorded_at: daysAgo(50) },
+
+    // one year ago
+    { value: 90, recorded_at: daysAgo(365) },
+    { value: 100, recorded_at: daysAgo(400) },
+  ];
+
+  await distanceRepo.save(distanceData);
+
+  // Generate 10 metrics for temperature
+  const tempData = [
+    // last few days
+    { value: 293.15, recorded_at: daysAgo(1) },
+    { value: 294.15, recorded_at: daysAgo(2) },
+    { value: 295.15, recorded_at: daysAgo(3) },
+    { value: 296.15, recorded_at: daysAgo(4) },
+    { value: 297.15, recorded_at: daysAgo(5) },
+
+    // previous months
+    { value: 289.15, recorded_at: daysAgo(30) },
+    { value: 288.15, recorded_at: daysAgo(40) },
+    { value: 287.15, recorded_at: daysAgo(50) },
+
+    // one year ago
+    { value: 285.15, recorded_at: daysAgo(365) },
+    { value: 284.15, recorded_at: daysAgo(400) },
+  ];
+
+  await tempRepo.save(tempData);
 
   console.log('Seed completed');
   await ds.destroy();

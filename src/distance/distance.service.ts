@@ -56,7 +56,7 @@ export class DistanceService {
   async chart(months: number = 1, unit?: DistanceUnit) {
     const end = new Date();
     const start = new Date(end);
-    start.setMonth(start.getMonth() - months + 1);
+    start.setMonth(start.getMonth() - months);
 
     const rows = await this.repo.query(
       `SELECT DISTINCT ON (date_trunc('day', recorded_at)) id, value, recorded_at
@@ -67,7 +67,7 @@ export class DistanceService {
     );
 
     const data = rows.map((r) => ({
-      date: r.recorded_at.slice(0, 10),
+      date: new Date(r.recorded_at).toISOString().slice(0, 10),
       value: r.value,
     }));
 
