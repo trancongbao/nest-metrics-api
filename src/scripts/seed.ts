@@ -27,11 +27,11 @@ async function run() {
   // Generate 10 metrics for distance
   const distanceData = [
     // last few days
-    { value: 10, recorded_at: daysAgo(1) },
-    { value: 20, recorded_at: daysAgo(2) },
-    { value: 30, recorded_at: daysAgo(2) },
-    { value: 40, recorded_at: daysAgo(10) },
-    { value: 50, recorded_at: daysAgo(10) },
+    { value: 10, recorded_at: offset(daysAgo(1), 1) },
+    { value: 20, recorded_at: offset(daysAgo(2), 1) },
+    { value: 30, recorded_at: offset(daysAgo(2), 2) }, // same day, unique time
+    { value: 40, recorded_at: offset(daysAgo(10), 1) },
+    { value: 50, recorded_at: offset(daysAgo(10), 2) }, // same day, unique time
 
     // previous month
     { value: 60, recorded_at: daysAgo(30) },
@@ -48,11 +48,11 @@ async function run() {
   // Generate 10 metrics for temperature
   const tempData = [
     // last few days
-    { value: 293.15, recorded_at: daysAgo(1) },
-    { value: 294.15, recorded_at: daysAgo(2) },
-    { value: 295.15, recorded_at: daysAgo(2) },
-    { value: 296.15, recorded_at: daysAgo(10) },
-    { value: 297.15, recorded_at: daysAgo(10) },
+    { value: 293.15, recorded_at: offset(daysAgo(1), 1) },
+    { value: 294.15, recorded_at: offset(daysAgo(2), 1) },
+    { value: 295.15, recorded_at: offset(daysAgo(2), 2) },
+    { value: 296.15, recorded_at: offset(daysAgo(10), 1) },
+    { value: 297.15, recorded_at: offset(daysAgo(10), 2) },
 
     // previous month
     { value: 289.15, recorded_at: daysAgo(30) },
@@ -71,3 +71,7 @@ async function run() {
 }
 
 run();
+
+function offset(date: Date, ms: number) {
+  return new Date(date.getTime() + ms);
+}
