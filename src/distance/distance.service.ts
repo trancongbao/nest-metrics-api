@@ -35,7 +35,7 @@ export class DistanceService {
   async list(unit?: DistanceUnit) {
     if (!unit) {
       return this.repo.query(`
-      SELECT id, recorded_at, value, created_at, 'm' AS unit
+      SELECT id, recorded_at, value, created_at,
       FROM distance_metrics
       ORDER BY recorded_at ASC
     `);

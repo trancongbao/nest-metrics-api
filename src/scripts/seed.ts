@@ -50,11 +50,11 @@ async function run() {
     // last few days
     { value: 293.15, recorded_at: daysAgo(1) },
     { value: 294.15, recorded_at: daysAgo(2) },
-    { value: 295.15, recorded_at: daysAgo(3) },
-    { value: 296.15, recorded_at: daysAgo(4) },
-    { value: 297.15, recorded_at: daysAgo(5) },
+    { value: 295.15, recorded_at: daysAgo(2) },
+    { value: 296.15, recorded_at: daysAgo(10) },
+    { value: 297.15, recorded_at: daysAgo(10) },
 
-    // previous months
+    // previous month
     { value: 289.15, recorded_at: daysAgo(30) },
     { value: 288.15, recorded_at: daysAgo(40) },
     { value: 287.15, recorded_at: daysAgo(50) },
