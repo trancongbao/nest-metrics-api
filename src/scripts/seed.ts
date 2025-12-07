@@ -29,9 +29,9 @@ async function run() {
     // last few days
     { value: 10, recorded_at: daysAgo(1) },
     { value: 20, recorded_at: daysAgo(2) },
-    { value: 30, recorded_at: daysAgo(3) },
-    { value: 40, recorded_at: daysAgo(4) },
-    { value: 50, recorded_at: daysAgo(5) },
+    { value: 30, recorded_at: daysAgo(2) },
+    { value: 40, recorded_at: daysAgo(10) },
+    { value: 50, recorded_at: daysAgo(10) },
 
     // previous month
     { value: 60, recorded_at: daysAgo(30) },
