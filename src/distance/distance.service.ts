@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DistanceMetric } from './distance.entity';
-import { CreateDistanceDto } from './dto/create-distance.dto';
 import { DistanceUnit, UNIT_TO_METER_FACTOR } from './distance.units';
 
 @Injectable()
