@@ -37,28 +37,31 @@ export class TemperatureService {
   async chart(months: number = 1, unit?: TemperatureUnit) {
     const end = new Date();
     const start = new Date(end);
-    start.setMonth(start.getMonth() - months + 1);
+    start.setMonth(start.getMonth() - months);
 
     const rows = await this.repo.query(
-      `SELECT DISTINCT ON (date_trunc('day', recorded_at)) id, value, recorded_at
-      FROM temperature_metrics
-      WHERE recorded_at >= $1 AND recorded_at <= $2
-      ORDER BY date_trunc('day', recorded_at), recorded_at DESC`,
+      `SELECT DISTINCT ON (day)
+        to_char(day, 'YYYY-MM-DD') AS date,
+        value
+      FROM (
+        SELECT
+          date_trunc('day', recorded_at) AS day,
+          value,
+          recorded_at
+        FROM temperature_metrics
+        WHERE recorded_at >= $1 AND recorded_at <= $2
+      ) AS t
+      ORDER BY day, recorded_at DESC;`,
       [start.toISOString(), end.toISOString()],
     );
 
-    const data = rows.map((r) => ({
-      date: r.recorded_at.slice(0, 10),
-      value: r.value,
-    }));
-
     if (unit)
-      return data.map((d) => ({
+      return rows.map((d) => ({
         date: d.date,
         value: fromKelvin(d.value, unit),
         unit,
       }));
 
-    return data.map((d) => ({ ...d, unit: 'K' }));
+    return rows.map((d) => ({ ...d, unit: 'K' }));
   }
 }
