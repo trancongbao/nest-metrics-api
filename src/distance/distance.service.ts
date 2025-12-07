@@ -3,13 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DistanceMetric } from './distance.entity';
 import { CreateDistanceDto } from './dto/create-distance.dto';
-import {
-  DistanceUnits,
-  DistanceUnit,
-  toMeters,
-  fromMeters,
-  UNIT_TO_METER_FACTOR,
-} from './distance.units';
 
 @Injectable()
 export class DistanceService {
@@ -17,8 +10,17 @@ export class DistanceService {
     @InjectRepository(DistanceMetric) private repo: Repository<DistanceMetric>,
   ) {}
 
+  // Define conversion factors *to meters* (1 of the unit = this many meters)
+  UNIT_TO_METER_FACTOR: Record<DistanceUnit, number> = {
+    [DistanceUnit.M]: 1,
+    [DistanceUnit.CM]: 0.01,
+    [DistanceUnit.IN]: 0.0254,
+    [DistanceUnit.FT]: 0.3048,
+    [DistanceUnit.YD]: 0.9144,
+  };
+
   async create(dto: CreateDistanceDto) {
-    const canonical = toMeters(dto.value, dto.unit);
+    const canonical = dto.value * this.UNIT_TO_METER_FACTOR[dto.unit];
     const metric = this.repo.create({
       value: canonical,
       recorded_at: new Date(dto.date),
@@ -35,7 +37,7 @@ export class DistanceService {
     `);
     }
 
-    const factor = UNIT_TO_METER_FACTOR[unit];
+    const factor = this.UNIT_TO_METER_FACTOR[unit];
 
     return this.repo.query(
       `
@@ -83,7 +85,7 @@ export class DistanceService {
     //
     // CASE 2 — unit conversion in DB
     //
-    const factor = UNIT_TO_METER_FACTOR[unit];
+    const factor = this.UNIT_TO_METER_FACTOR[unit];
 
     const rows = await this.repo.query(
       `
@@ -105,4 +107,12 @@ export class DistanceService {
 
     return rows; // (date, value)
   }
+}
+
+enum DistanceUnit {
+  M = 'm',
+  CM = 'cm',
+  IN = 'in',
+  FT = 'ft',
+  YD = 'yd',
 }
