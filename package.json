@@ -21,7 +21,8 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./typeorm.config.ts",
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d ./typeorm.config.ts src/migrations/auto-migration",
     "migration:run": "typeorm-ts-node-commonjs migration:run -d ./typeorm.config.ts",
-    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ./typeorm.config.ts"
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ./typeorm.config.ts",
+    "seed": "ts-node src/scripts/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -31,6 +32,7 @@
     "@nestjs/typeorm": "^11.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
+    "dotenv": "^17.2.3",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",

@@ -60,9 +60,9 @@ export class DistanceService {
 
     const rows = await this.repo.query(
       `SELECT DISTINCT ON (date_trunc('day', recorded_at)) id, value, recorded_at
-FROM distance_metrics
-WHERE recorded_at >= $1 AND recorded_at <= $2
-ORDER BY date_trunc('day', recorded_at), recorded_at DESC`,
+      FROM distance_metrics
+      WHERE recorded_at >= $1 AND recorded_at <= $2
+      ORDER BY date_trunc('day', recorded_at), recorded_at DESC`,
       [start.toISOString(), end.toISOString()],
     );
 

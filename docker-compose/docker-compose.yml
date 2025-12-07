@@ -29,16 +29,6 @@ services:
     ports:
       - 5433:80
 
-  redis:
-    container_name: redis
-    image: redis:latest
-    restart: always
-    ports:
-      - '6379:6379'
-    volumes:
-      - redis:/root/redis
-
 volumes:
   postgres_data:
   pgadmin_data:
-  redis:
