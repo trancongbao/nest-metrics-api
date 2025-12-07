@@ -13,7 +13,7 @@ export class TemperatureMetric {
   @Column('double precision')
   value: number;
 
-  @Column('timestamp with time zone')
+  @Column('timestamp with time zone', { unique: true })
   recorded_at: Date;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
