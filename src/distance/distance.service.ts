@@ -11,12 +11,18 @@ export class DistanceService {
     @InjectRepository(DistanceMetric) private repo: Repository<DistanceMetric>,
   ) {}
 
-  async create(dto: CreateDistanceDto) {
-    const canonical = dto.value * UNIT_TO_METER_FACTOR[dto.unit];
+  async create(
+    recordedAt: Date | string,
+    value: number,
+    unit: DistanceUnit | undefined,
+  ) {
+    const safeUnit = unit ?? 'm';
+    const canonical = value * UNIT_TO_METER_FACTOR[safeUnit];
     const metric = this.repo.create({
       value: canonical,
-      recorded_at: new Date(dto.date),
+      recorded_at: new Date(recordedAt),
     });
+
     return this.repo.save(metric);
   }
 
