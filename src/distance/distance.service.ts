@@ -15,10 +15,8 @@ export class DistanceService {
     value: number,
     unit: DistanceUnit | undefined,
   ) {
-    const safeUnit = unit ?? 'm';
-    const canonical = value * UNIT_TO_METER_FACTOR[safeUnit];
     const metric = this.repo.create({
-      value: canonical,
+      value: value * UNIT_TO_METER_FACTOR[unit ?? 'm'],
       recorded_at: new Date(recordedAt),
     });
 
