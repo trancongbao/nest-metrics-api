@@ -17,12 +17,6 @@ export class DistanceService {
     @InjectRepository(DistanceMetric) private repo: Repository<DistanceMetric>,
   ) {}
 
-  validateUnit(unit: string) {
-    if (!DistanceUnits.includes(unit as DistanceUnit)) {
-      throw new BadRequestException('Invalid distance unit');
-    }
-  }
-
   async create(dto: CreateDistanceDto) {
     const canonical = toMeters(dto.value, dto.unit);
     const metric = this.repo.create({
